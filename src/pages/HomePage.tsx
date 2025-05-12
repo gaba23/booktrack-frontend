@@ -67,7 +67,6 @@ export function HomePage() {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         const decoded = JSON.parse(jsonPayload);
-        console.log('Token decodificado:', decoded);
         setUserId(decoded.id);
       } catch (error) {
         console.error('Erro ao decodificar token:', error);
@@ -80,7 +79,6 @@ export function HomePage() {
     try {
       setLoading(true);
       const response = await api.get('/livros/meus-livros');
-      console.log('Resposta da API:', response.data);
       setBooks(response.data);
     } catch (err) {
       console.error('Error fetching books:', err);
