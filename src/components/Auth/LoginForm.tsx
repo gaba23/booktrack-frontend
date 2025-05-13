@@ -13,13 +13,14 @@ import {
   IconButton
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import api, { setAuthToken } from '../../services/api.ts';
+import { useAuth } from '../../contexts/AuthContext.tsx';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   useEffect(() => {
     if (error) {
@@ -33,13 +34,10 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await api.post('/auth/login', { email, senha: password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userEmail', email);
-      setAuthToken(response.data.token);
+      await signIn(email, password);
       navigate('/home');
     } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao fazer login');
+      setError(err.message || 'Erro ao fazer login');
     }
   };
 

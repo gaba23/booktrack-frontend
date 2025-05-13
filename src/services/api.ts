@@ -14,7 +14,7 @@ api.interceptors.response.use(
   response => response,
   error => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('@BookTrack:token');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -24,14 +24,14 @@ api.interceptors.response.use(
 export const setAuthToken = (token: string | null) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    localStorage.setItem('token', token);
+    localStorage.setItem('@BookTrack:token', token);
   } else {
     delete api.defaults.headers.common['Authorization'];
-    localStorage.removeItem('token');
+    localStorage.removeItem('@BookTrack:token');
   }
 };
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('@BookTrack:token');
 if (token) {
   setAuthToken(token);
 }
